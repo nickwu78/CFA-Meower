@@ -1,4 +1,6 @@
 class User < ApplicationRecord
+  acts_as_follower
+  acts_as_followable
   acts_as_liker
   has_many :posts
   # Include default devise modules. Others available are:

@@ -1,5 +1,16 @@
 class PostsController < ApplicationController
-  before_action :set_post, only: [:show, :edit, :update, :destroy]
+  before_action :set_post, only: [:show, :edit, :update, :destroy, :toggle_like]
+  before_action :set_current_user, only: [:toggle_follow, :toggle_like, :create]
+
+  def toggle_follow
+    @user.toggle_follow!(User.find(params[:user_id]))
+    redirect_to :back
+  end
+
+  def toggle_like
+    @user.toggle_like!(@post)
+    redirect_to :back
+  end
 
   # GET /posts
   # GET /posts.json
@@ -10,6 +21,8 @@ class PostsController < ApplicationController
   # GET /posts/1
   # GET /posts/1.json
   def show
+    @follow_status = current_user.follows?(@post.user) ? 'Unfollow' : 'Follow'
+    @like_status = current_user.likes?(@post) ? 'Unlike' : 'Like'
   end
 
   # GET /posts/new
@@ -25,7 +38,7 @@ class PostsController < ApplicationController
   # POST /posts.json
   def create
     @post = Post.new(post_params)
-    @post.user_id = current_user.id
+    @post.user_id = @user.id
 
     respond_to do |format|
       if @post.save
@@ -63,13 +76,18 @@ class PostsController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_post
-      @post = Post.find(params[:id])
-    end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def post_params
-      params.require(:post).permit(:message, :user_id, :username)
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_post
+    @post = Post.find(params[:id])
+  end
+
+  def set_current_user
+    @user = current_user
+  end
+
+  # Never trust parameters from the scary internet, only allow the white list through.
+  def post_params
+    params.require(:post).permit(:message, :user_id, :username)
+  end
 end
