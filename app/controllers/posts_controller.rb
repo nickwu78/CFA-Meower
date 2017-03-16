@@ -9,6 +9,7 @@ class PostsController < ApplicationController
 
   def toggle_like
     @user.toggle_like!(@post)
+    @post.likers_count += 1
     redirect_to :back
   end
 
