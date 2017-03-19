@@ -13,6 +13,10 @@ class PostsController < ApplicationController
     redirect_to :back
   end
 
+  def author?
+    if user.id == post.user_id
+  end
+  
   # GET /posts
   # GET /posts.json
   def index
