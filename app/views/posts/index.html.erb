@@ -7,6 +7,7 @@
       <th>Meow</th>
       <th>User</th>
       <th>Time</th>
+      <th>Image</th>
       <th colspan="3"></th>
     </tr>
   </thead>
@@ -16,7 +17,8 @@
       <tr>
         <td><%= post.message %></td>
         <td><%= post.user.username %></td>
-        <td><%= post.created_at%></td>
+        <td>Posted <%= time_ago_in_words(post.created_at) %> Ago</td>
+        <td><%= image_tag post.picture.url if post.picture? %>
         <td><%= link_to 'Show', post %></td>
         <td><%= link_to 'Edit', edit_post_path(post) %></td>
         <td><%= link_to 'Destroy', post, method: :delete, data: { confirm: 'Are you sure?' } %></td>

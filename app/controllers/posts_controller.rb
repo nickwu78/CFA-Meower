@@ -15,8 +15,9 @@ class PostsController < ApplicationController
 
   def author?
     if user.id == post.user_id
+    end
   end
-  
+
   # GET /posts
   # GET /posts.json
   def index
@@ -93,6 +94,6 @@ class PostsController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def post_params
-    params.require(:post).permit(:message, :user_id, :username)
+    params.require(:post).permit(:message, :user_id, :username, :picture)
   end
 end
